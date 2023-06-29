@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Public Sans', serif;
+  font-family: 'Silk Display Regular', sans-serif; 
+  
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  font-size: 20px;
+  border-style: solid;
+  border-color: #010C80;
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.button {
+  /*background-color: #010C80;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px 4px;
+  cursor: pointer;
+  border-radius: 16px;*/
+  display: flex;
+  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 5px;
+  height: 50px;
+  width: 200px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #0080FF;
+  color: white;
+}
+
+.button:hover {
+  background-color: hsl(233, 8%, 62%);
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<h2> Choose your respective panel</h2>
+<!--<p>Resize the browser window to see the responsive effect (the columns will stack on top of each other instead of floating next to each other, when the screen is less than 600px wide).</p>-->
+
+<div class="row">
+  <div class="column" style="background-color:hsl(220, 16%, 96%);" font-style="EB Garamond, italic">
+    <h2>Doctor</h2>
+    <p>Please click the button below to access your respective dashboard</p>
+    <a href="doctorlogin.html" button class="button">Doctor</button></a>
+  </div>
+  <div class="column" style="background-color: hsl(220, 16%, 96%);" font-style="EB Garamond, italic" >
+    <h2>Patient</h2>
+    <p>Please click the button below to access your respective dashboard</p>
+    <a href="patientlogin.html" button class="button"> Patient</button></a>
+  </div>
+</div>
+</body>
+</html>

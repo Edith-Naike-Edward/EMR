@@ -1,0 +1,70 @@
+Appointment Table rows:<tr>
+            <td><?php echo $row["requestappointment.ApptID"] ?></td>
+            <td><?php echo $row["appointment.PatientID"] ?></td>
+            <td><?php echo $row["requestappointment.PreferredApptDate"] ?></td>
+            <td><?php echo $row["appointment.ConfirmedApptDate"] ?></td>
+            <td><?php echo $row["appointment.ApptTime"] ?></td>
+            <td><?php echo $row["appointment.ApptStatus"] ?></td>
+            <td><?php echo $row["appointment.ConfirmedDate"] ?></td>
+            <td><?php echo $row["appointment.ConfirmedTime"] ?></td>
+            <td>
+              <a href="edit.php?id=<?php echo $row["requestappointment.ApptID"] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a>
+              <a href="delete.php?id=<?php echo $row["requestappointment.ApptID"] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
+            </td>
+          </tr>
+Previous code for submit button in requestappttable:
+                        html += '<td><button class="btn btn-primary SubmitBtn" data-id="' + appointment.PatientID + '">Submit</button></td>';
+Confirm_apppointment.php code:
+<?php
+// Database connection established
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projectemrsystem";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the patient ID from the form submission
+    $PatientID = $_POST['patient_id'];
+    //$ApptID = $_POST['appointment_id'];
+    
+    // Retrieve the appointment data from the requestappointment table
+    //$sql = "SELECT * FROM requestappointment WHERE ApptID = '$ApptID'";
+    //$sql = "SELECT * FROM requestappointment WHERE PatientID = '$PatientID'";
+
+    //$result = mysqli_query($conn, $sql);
+    //if ($result->num_rows > 0) {
+      //  $row = mysqli_fetch_assoc($result);
+        
+        // Extract the necessary data from the requestappointment table
+        $preferredApptDate = $_POST["PreferredApptDate"];
+        $visitType = $_POST["Visit_type"];
+        $visitReason = $_POST["Visit_reason"];
+        
+        // Insert the appointment data into the appointment table
+        $stmt = $conn->prepare("INSERT INTO appointment (PatientID, ApptID, PreferredApptDate, Visit_type, Visit_reason) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $patientID, $apptID, $preferredApptDate, $visitType, $visitReason);
+        
+        if ($stmt->execute()) {
+            echo 'Appointment confirmed and added to the appointment table.';
+        } else {
+            echo 'Error: ' . $stmt->error;
+        }
+        
+        $stmt->close();
+    } else {
+        echo 'Error: No matching appointment found in the requestappointment table.';
+    }
+//}
+
+mysqli_close($conn);
+?>
+SELECT JOIN FOR requestappointment and appointment
+        /*$sql = "SELECT requestappointment.ApptID, appointment.PatientID, requestappointment.PreferredApptDate, 
+        appointment.ConfirmedDate, appointment.ConfirmedTime, appointment.ApptStatus, requestappointment.Visit_type, requestappointment.Visit_reason
+        FROM requestappointment
+        JOIN appointment ON requestappointment.ApptID = appointment.ApptID";*/

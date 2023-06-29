@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Table</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      /* Add custom CSS styles here */
+      *{
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+      }
+
+      table, th, td {
+        border:1px solid rgb(77, 135, 210);
+        padding-top: 12px;
+        border-collapse: collapse;
+      }
+
+      th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #7dc3ec;
+        color: white;
+      }
+
+      tr {
+        color: #000;
+        text-align: left;
+      }
+
+      tr.active-row {
+        font-weight: bold;
+        color: #054d3e;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 500px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      tr:nth-child(even) {
+        background-color: #edea928c;
+      }
+
+      tr:hover {
+        background-color: #ddd;
+      }
+  </style> 
+</head>
+<body>
+    <div class="container">
+        <h2>Patients</h2>
+        <div class="form-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by Name">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Gender</th>
+                    <th>Occupation</th>
+                    <th>Physical Address</th>
+                    <th>Postal Address</th>
+                    <th>Next of Kin First Name</th>
+                    <th>Next of Kin Last Name</th>
+                    <th>Next of Kin relation</th>
+                    <th>Next of Kin Phone Number</th>
+                    <th>Next of Kin Email</th>                  
+                </tr>
+            </thead>
+            <tbody id="patientTableBody">
+                <!-- Data rows will be added dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var patients;
+            
+            // Fetch data from the server using PHP and MySQL
+            $.ajax({
+                url: 'fetchpatient.php',
+                type: 'GET',
+                success: function(data) {
+                    patients = JSON.parse(data);
+
+                    // Sort patients based on PatientFirstName in ascending order
+                    patients.sort(function(a, b) {
+                        //return b.PatientID.localeCompare(a.PatientID);
+                        return a.PatientID - b.PatientID;
+                    });
+
+                    // Generate HTML for each patient row
+                    var html = '';
+                    patients.forEach(function(patient) {
+                        html += '<tr>';
+                        html += '<td>' + patient.PatientID + '</td>';
+                        html += '<td>' + patient.PatientFirstName + '</td>';
+                        html += '<td>' + patient.PatientLastName + '</td>';
+                        html += '<td>' + patient.PatientDOB + '</td>';
+                        html += '<td>' + patient.PatientEmail + '</td>';
+                        html += '<td>' + patient.PatientPhoneNo + '</td>';
+                        html += '<td>' + patient.Gender + '</td>';
+                        html += '<td>' + patient.Occupation + '</td>';
+                        html += '<td>' + patient.PhysicalAddress + '</td>';
+                        html += '<td>' + patient.PostalAddress + '</td>';
+                        html += '<td>' + patient.NKFirstName + '</td>';
+                        html += '<td>' + patient.NKLastName + '</td>';
+                        html += '<td>' + patient.NKrelation + '</td>';
+                        html += '<td>' + patient.NKPhoneNo + '</td>';
+                        html += '<td>' + patient.NKEmail + '</td>';
+                        html += '</tr>';
+                    });
+
+                    // Append the HTML to the table body
+                    $('#patientTableBody').append(html);
+                }
+            });
+
+            // Function to filter the table based on search input
+            $('#searchInput').keyup(function() {
+                var searchText = $(this).val().toLowerCase();
+
+                $('tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    $(this).toggle(rowText.indexOf(searchText) > -1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

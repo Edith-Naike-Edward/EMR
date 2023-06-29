@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointment Requests</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Appointment Requests</h2>
+        <div class="form-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Appointment ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Preferred Appointment Date</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Visit Type</th>
+                    <th>Visit Reason</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentTableBody">
+                <!-- Data rows will be added dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+          var appointments;
+            // Fetch data from the server using PHP and MySQL
+            $.ajax({
+                url: 'fetch_data.php',
+                type: 'GET',
+                success: function(data) {
+                    appointments = JSON.parse(data);
+
+                    // Sort appointments in descending order of PreferredApptDate
+                    appointments.sort(function(a, b) {
+                        return new Date(a.PreferredApptDate) - new Date(b.PreferredApptDate);
+                    });
+
+                    // Generate HTML for each appointment row
+                    var html = '';
+                    appointments.forEach(function(appointment) {
+                        html += '<tr>';
+                        html += '<td>' + appointment.PatientID + '</td>';
+                        html += '<td>' + appointment.ApptID + '</td>';
+                        html += '<td>' + appointment.PatientFirstName + '</td>';
+                        html += '<td>' + appointment.PatientLastName + '</td>';
+                        html += '<td>' + appointment.PreferredApptDate + '</td>';
+                        html += '<td>' + appointment.PatientPhoneNo + '</td>';
+                        html += '<td>' + appointment.PatientEmail + '</td>';
+                        html += '<td>' + appointment.Visit_type + '</td>';
+                        html += '<td>' + appointment.Visit_reason + '</td>';
+                        html += '<td><form method="post" action="confirm_appointment.php"><input type="hidden" name="patient_id" value="' + appointment.PatientID + '"><button type="submit" class="btn btn-primary">Submit</button></form></td>';
+                        html += '</tr>';
+                    });
+
+                    // Append the HTML to the table body
+                    $('#appointmentTableBody').append(html);
+
+                    // Attach click event listener to the Confirm button
+                    /*$('.confirmBtn').click(function() {
+                        var patientID = $(this).data('id');
+                        confirmAppointment(patientID);
+                    });*/
+                    /*$('.confirmBtn').click(function() {
+                    var patientID = $(this).data('id');
+                    confirmAppointment(patientID, appointments); // Pass appointments as a parameter
+                    });*/
+                }
+            });
+
+            // Function to confirm the appointment
+            /*function confirmAppointment(patientID, appointments) {
+                // Fetch the appointment data for the specific patient using patientFirstName
+                var appointmentData = getAppointmendData(patientID);
+
+                // Remove the PreferredApptDate from the appointmentData
+                delete appointmentData.PreferredApptDate;
+
+                // Send the data to the confirm_appointment.php file using AJAX
+                $.ajax({
+                    url: 'confirm_appointment.php',
+                    type: 'POST',
+                    data: appointmentData,
+                    success: function(response) {
+                        console.log(response); // Handle the response as needed
+                    }
+                });
+            }*/
+
+            // Function to fetch the appointment data for a specific patient using patientID
+            function getAppointmendData(patientID) {
+                // Iterate through the appointments array and find the matching patient
+                var appointmentData;
+                appointments.forEach(function(appointment) {
+                    if (appointment.PatientID === patientID) {
+                        appointmentData = appointment;
+                    }
+                });
+
+                return appointmentData;
+            }
+            function getAppointmendData(patientID, appointments) {
+            var appointmentData;
+            appointments.forEach(function(appointment) {
+                if (appointment.PatientID === patientID) {
+                    appointmentData = appointment;
+                }
+            });
+
+            return appointmentData; // Return the data
+            }
+
+            // Function to filter the table based on search input
+            $('#searchInput').keyup(function() {
+                var searchText = $(this).val().toLowerCase();
+
+                $('tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    $(this).toggle(rowText.indexOf(searchText) > -1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

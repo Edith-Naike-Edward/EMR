@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment</title>
+  <style>
+    .appointment-module {
+  max-width: 600px;
+  margin: auto;
+  padding: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #0080FF;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-group {
+  width: 48%;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  padding: 20px;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+  .form-group {
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="appointment-module">
+  <h2>Appointment Details</h2>
+  <form>
+    <div class="form-group">
+      <label for="doctor-id">Doctor ID:</label>
+      <input type="text" id="doctor-id" name="doctor-id" required>
+    </div>
+    <div class="form-group">
+      <label for="patient-id">Patient ID:</label>
+      <input type="text" id="patient-id" name="patient-id" required>
+    </div>
+    <div class="form-group">
+      <label for="visit-type">Visit Type:</label>
+      <select id="visit-type" name="visit-type" required>
+        <option value="checkup">Checkup</option>
+        <option value="consultation">Consultation</option>
+        <option value="treatment">Treatment</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="visit-reason">Visit Reason:</label>
+      <textarea id="visit-reason" name="visit-reason" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="appointment-time">Appointment Time:</label>
+      <input type="time" id="appointment-time" name="appointment-time" required>
+    </div>
+    <div class="form-group">
+      <label for="appointment-status">Appointment Status:</label>
+      <select id="appointment-status" name="appointment-status" required>
+        <option value="confirmed">Confirmed</option>
+        <option value="pending">Pending</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="appointment-date">Appointment Date:</label>
+      <input type="date" id="appointment-date" name="appointment-date" required>
+    </div>
+    <div class="form-group">
+      <label for="appointment-id">Appointment ID:</label>
+      <input type="text" id="appointment-id" name="appointment-id" required>
+    </div>
+    <div class="form-group">
+      <label for="medical-record">Medical Record ID:</label>
+      <input type="text" id="medical-record" name="medical-record" required>
+    </div>
+    <div class="form-group">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+</body>

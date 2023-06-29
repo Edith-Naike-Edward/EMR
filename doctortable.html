@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Table</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Doctors</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Doctor ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody id="doctorTableBody">
+                <!-- Data rows will be added dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var doctors;
+
+            // Fetch data from the server using PHP and MySQL
+            $.ajax({
+                url: 'fetchdoctors.php',
+                type: 'GET',
+                success: function(data) {
+                    doctors = JSON.parse(data);
+
+                    // Sort doctors based on DoctorID in ascending order
+                    doctors.sort(function(a, b) {
+                        return a.DoctorID - b.DoctorID;
+                    });
+
+                    // Generate HTML for each doctor row
+                    var html = '';
+                    doctors.forEach(function(doctor) {
+                        html += '<tr>';
+                        html += '<td>' + doctor.DoctorID + '</td>';
+                        html += '<td>' + doctor.DocFirstName + '</td>';
+                        html += '<td>' + doctor.DocLastName + '</td>';
+                        html += '<td>' + doctor.DoctorEmail + '</td>';
+                        html += '<td>' + doctor.DoctorPhoneNo + '</td>';
+                        html += '</tr>';
+                    });
+
+                    // Append the HTML to the table body
+                    $('#doctorTableBody').append(html);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
